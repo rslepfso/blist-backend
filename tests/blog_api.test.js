@@ -58,6 +58,31 @@ test("check if post created", async () => {
   expect(lastBlog).toEqual({ ...newBlog, id: lastBlog.id });
 });
 
+test("check for deletion", async () => {
+  const blogs = await api.get("/api/blogs");
+  const blogToDelete = blogs.body[0];
+
+  const response = api.delete(`/api/blogs/${blogToDelete.id}`);
+
+  expect(204);
+}, 100000);
+
+test("check for succesful update", async () => {
+  const blogs = await api.get("/api/blogs");
+  const blogToUpdate = blogs.body[0];
+
+  const newBlog = {
+    title: "Goal versus Everton",
+    author: "Leandro Trossard",
+    url: "goal.com/1",
+    likes: 1,
+  };
+
+  const response = await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog);
+
+  expect(response.body.likes).toBe(1);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
