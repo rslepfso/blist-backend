@@ -34,6 +34,30 @@ test("fetch two blogs", async () => {
   expect(response.body).toHaveLength(2);
 }, 100000);
 
+test("check for id property", async () => {
+  const blogs = await api.get("/api/blogs");
+  const requestedBlog = blogs.body[0];
+
+  const response = await api.get(`/api/blogs/${requestedBlog.id}`);
+  expect(response.body.id).toBeDefined();
+});
+
+test("check if post created", async () => {
+  const newBlog = {
+    title: "Goal versus Man Utd",
+    author: "Declan Rice",
+    url: "goal.com/3",
+    likes: 97,
+  };
+
+  await api.post("/api/blogs/").send(newBlog);
+
+  const blogs = await api.get("/api/blogs");
+  expect(blogs.body.length).toBe(initialBlogs.length + 1);
+  const lastBlog = blogs.body[blogs.body.length - 1];
+  expect(lastBlog).toEqual({ ...newBlog, id: lastBlog.id });
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
