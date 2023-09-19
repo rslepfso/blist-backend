@@ -11,3 +11,30 @@ Content-Type: application/json
   "url": "example.com",
   "likes": 123
 }
+
+###
+
+GET http://localhost:3003/api/users
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "jsmith",
+  "name": "John Smith",
+  "password": "test"
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Goal vs Everton",
+  "author": "Leandro Trossard",
+  "url": "goal.com/99",
+  "likes": 99,
+}
